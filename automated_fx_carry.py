@@ -1,3 +1,8 @@
+# Create a system that predicts an expected value of each of 45 fx pairs
+# 1. PCA the yield curve and use components. Curvature is a particularly strong predictor
+# 2. Build a strategy based on breaches on cumulative breaches of UIP
+# 3. Use risk reversals to gauge extreme positioning
+
 # Import modules
 import pandas as pd
 import win32com.client

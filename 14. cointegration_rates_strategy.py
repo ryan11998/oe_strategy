@@ -1,3 +1,9 @@
+# Relative value rates strategy based on cointegrated pairs
+# Under the conjecture that central bankers are dependent on data that is measured with an error that has increased in recent years
+# Hence injecting volatility into the market, an environment in which rv strategies should perform well
+# Research note available upon request
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import win32com.client
@@ -44,17 +50,6 @@ def rate_trajectory(): # Calculate market pricing of rate change
         df[df.columns[df.columns.str.contains(cb)]] = subtract(df[df.columns[df.columns.str.contains(cb)]], base, cb)
     return df
     
-# def spread(): # calculate spread of pricing trajectory between cbs/tenors
-#     df = rate_trajectory()
-#     df_mapped = pd.DataFrame(index=df.index)
-#     for cb1 in df.columns:
-#         for cb2 in df.columns:
-#             if cb1 == cb2:
-#                 continue
-#             else:
-#                 df_mapped[f'{cb1}{cb2}'] = df[f'{cb1}'] - df[f'{cb2}']
-    
-#     return df_mapped
 
 def spread():  # Calculate spread of pricing trajectory between cbs/tenors
     df = rate_trajectory()

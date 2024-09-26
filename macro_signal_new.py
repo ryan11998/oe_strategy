@@ -134,3 +134,120 @@ df = strategy()
 
 plt.plot(df[['spx','return']].cumprod(),label=['spx','strategy'])
 plt.legend()
+
+# Alternatives
+
+    
+
+    
+current = pd.to_datetime('2024-07-31')
+last = current -pd.DateOffset(years=10)
+    
+choices(last,current)
+
+
+
+
+
+df = pd.read_excel("Z:/Global strategy team/GAA frameworks/Macro signal/ryan_new_signal/returns.xlsx", sheet_name='innes_alternatives_q', index_col=0)
+df.columns = df.iloc[0,:]
+df=df.iloc[1:,:8]
+df.join
+
+
+
+
+
+# dispersion/average returns in publically listed private equity companies
+def returns():
+    df = pd.read_excel("Z:\Global strategy team\Personal\Hubert/Sheets/LPX50.xlsx", sheet_name='df', index_col = 0).pct_change()
+    df = df.join(md.macrobond_daily(['sp500_500tr']).pct_change())
+    df[df.columns[0]] = df['sp500_500tr']
+    df = df.drop(['sp500_500tr'],axis=1)
+    return df
+    
+def fx_dictionary():
+    df = pd.read_excel("Z:\Global strategy team\Personal\Hubert/Sheets/LPX50.xlsx", sheet_name='mapping', index_col = 0)
+    df = df['Currency']
+    return dict(df), df.unique()[1:]
+
+
+# def sector_dictionary():
+#     df = pd.read_excel("Z:\Global strategy team\Personal\Hubert/Sheets/LPX50.xlsx", sheet_name='mapping', index_col = 0)
+#     df = df['Sector']
+#     return dict(df), df.unique()[1:]
+
+def returns_usd():
+    fx = md.macrobond_daily(fx_dictionary()[1]).pct_change()
+    fx['usd'] = 0
+    dictionary = fx_dictionary()
+    r = returns()
+    concat = r.join(fx)
+    for company in r.columns[1:]:
+        pair = dictionary[0][company]
+        concat[company] = concat[company] - concat[pair]
+        
+    concat = concat.drop(['jpy','cad','usd','eur','chf','gbp'],axis=1)
+
+    
+    concat['average return'] = concat.mean(axis=1)
+    concat['std'] = concat.std(axis=1)
+    
+    for company in r.columns[1:]:
+        concat[company] = abs(concat[company] - concat[r.columns[0]])
+        
+    concat['dispersion'] = concat[r.columns[1:]].sum(axis=1) / concat[r.columns[1:]].count(axis=1)
+    
+    
+    # concat = concat.drop(r.columns, axis=1)
+    
+    return concat
+        
+
+df = returns_usd()
+
+df_ = pd.DataFrame(h_data()).join(df.resample('Q').last())
+df_ = df_[['signal','average return']].dropna().loc['2000-01-01':].groupby('signal').mean()
+
+df_.std()
+
+df.resample('Q').last()
+
+plt.plot(df['dispersion'])
+    
+    
+h_data()
+
+
+
+
+list_fx = currencies['Currency'].unique()[1:]
+fx = md.macrobond_daily(list_fx)
+
+
+
+currencies = df.iloc[0,:]
+
+
+
+
+
+import statsmodels.api as sm
+
+# df = returns_usd()
+df = pd.read_excel("Z:\Global strategy team\Personal\Hubert/Sheets/LPX50.xlsx", sheet_name='df', index_col = 0)
+df = df[df.columns[0]]
+df = pd.DataFrame(df).join(pd.read_excel('Z:/Global strategy team/Personal/Hubert/Sheets/MOVE.xlsx',index_col=0))
+df = df.join(md.macrobond_daily(['vix']))
+df.columns = ['pe','3m','6m','1m','vix']
+df= df[['pe','6m','vix']].dropna()
+df = df.resample('W').last()
+df['pe'] = df['pe'].pct_change()
+
+
+df[['6m','vix']] = df[['6m','vix']].diff()
+df = df.dropna()
+df = sm.add_constant(df)
+
+model = sm.OLS(df['pe'], df[['const','6m','vix']]).fit(cov_type='HC3')
+model.summary()

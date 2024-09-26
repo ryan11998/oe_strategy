@@ -1,3 +1,5 @@
+# A module that improves the accessibility of the macrobond API
+
 # Import modules
 import pandas as pd
 

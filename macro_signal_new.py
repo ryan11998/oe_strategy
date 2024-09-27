@@ -1,6 +1,6 @@
 # Organise historical gdp and inflaton data into six states and assess which assets perform the best in each
-# use oe forecasts to forecast states in over the next six months
-# Build a strategy that outperforms the benchmark accordingly
+# use oe to forecast state of the world in the next six months
+# Build a strategy that longs the asset that is expected to outperform
 
 import macrobond_module as md
 import oe_scenarios_functions as OE

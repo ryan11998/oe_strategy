@@ -34,8 +34,8 @@ def macrobond_daily(series_list):
         r.Frequency = f.DAILY
     
     frames = getDataframe(d, r)
-    frames = pd.DataFrame(frames.dropna()) ## Downloaded G10 government bond yields with a monthly frequency
-    return(frames)
+    frames = pd.DataFrame(frames.dropna())
+    return frames
 
 
 def macrobond_monthly(series_list):
@@ -59,8 +59,8 @@ def macrobond_monthly(series_list):
         r.Frequency = f.MONTHLY
     
     frames = getDataframe(d, r)
-    frames = pd.DataFrame(frames.dropna()) ## Downloaded G10 government bond yields with a monthly frequency
-    return(frames)
+    frames = pd.DataFrame(frames.dropna())
+    return frames
 
 def macrobond_quarterly(series_list):
     
@@ -83,12 +83,12 @@ def macrobond_quarterly(series_list):
         r.Frequency = f.QUARTERLY
     
     frames = getDataframe(d, r)
-    return(frames)
+    return frames
 
 def macrobond_excel(path, column_labels):
     df = pd.read_excel(path)
     df.index = df.iloc[:,0]
     df = df.iloc[3:,1:]
     df.columns = column_labels
-    return(df)
+    return df
     

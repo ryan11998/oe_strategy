@@ -250,7 +250,7 @@ y = produce_IV_estimates(chain,asof,r,penalty)
 
 df, mom = generate_dist(chain, asof,r,y)
 df_1, mom_1 = generate_dist(chain, asof_1,r_1,x)
-mom.to_excel(f'C:/Users/rfield/Desktop/option_implied_distributions/{chain}_{asof}_mom10.xlsx')
-mom_1.to_excel(f'C:/Users/rfield/Desktop/option_implied_distributions/{chain}_{asof_1}_mom10.xlsx')
+df.to_excel(f'C:/Users/rfield/Desktop/option_implied_distributions/{chain}_{asof}_mom10.xlsx')
+df_1.to_excel(f'C:/Users/rfield/Desktop/option_implied_distributions/{chain}_{asof_1}_mom10.xlsx')
 
 plot_dist_comp(df,df_1,asof,asof_1,chain,color = 'blue')
